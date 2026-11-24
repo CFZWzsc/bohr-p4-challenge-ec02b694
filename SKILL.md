@@ -69,13 +69,24 @@ python /skills/weekly-skill/scripts/run_skill.py --case /input/case.json --out /
 示意输入：`{"case_id":"synthetic-opt-demo","output_contract":{"recommendation":"object","search_strategy":"object"}}`。示意输出保留 `case_id`、`recommendation`、`search_strategy`、`status`；无参数域时 `insufficient_input`，`recommendation` 为 `null`。仅为接口示例。
 
 
+## Quickstart
+
+在包根目录执行：
+
+```bash
+python scripts/run_skill.py --case examples/demo-case/case.json --out ./demo-output/result.json
+```
+
+- 演示案例：`examples/demo-case/case.json`（2 个有界参数、6 条历史观测、按次预算；纯合成）。
+- 输出：`result.json` 含 `recommendation`、`search_strategy`、`feasible_space`、`model`、`budget`，并给出预算内的分批实验序列；本案例实测 `status="success"`。
+
 ## 交付保证与评分对齐
 
 调用顺序（固定）：
 
 1. 先运行包内脚本（若存在）：`python scripts/run_skill.py`（默认读 `/input/case.json`，写 `/app/output/result.json`）；路径不同时用 `--case` / `--out` 指定。
 2. 再完成脚本无法自动完成的实质工作（译文、论述、图表、修订、结论等），把结果写回 `result.json` 对应字段。
-3. 最后自检：`case_id` 与输入一致；`output_contract` 每个字段都存在；`status` 为 `completed`（仅在确实缺输入时为 `partial`）；无 `pending` 占位；数字、引用、来源可逐条回溯。
+3. 最后自检：`case_id` 与输入一致；`output_contract` 每个字段都存在；`status` 为 `success`（仅在确实缺输入时为 `partial`）；无 `pending` 占位；数字、引用、来源可逐条回溯。
 
 运行保证：
 
