@@ -1,0 +1,26 @@
+{
+  "case_id": "demo-bounded-optimization",
+  "parameters": [
+    {"name": "temperature_c", "min": 20, "max": 40, "step": 5, "unit": "°C"},
+    {"name": "residence_time_min", "min": 10, "max": 30, "step": 5, "unit": "min"}
+  ],
+  "objectives": [
+    {"name": "yield_pct", "unit": "%", "direction": "maximize"}
+  ],
+  "observations": [
+    {"temperature_c": 20, "residence_time_min": 10, "yield_pct": 41.2},
+    {"temperature_c": 25, "residence_time_min": 15, "yield_pct": 47.9},
+    {"temperature_c": 30, "residence_time_min": 20, "yield_pct": 54.1},
+    {"temperature_c": 35, "residence_time_min": 25, "yield_pct": 60.3},
+    {"temperature_c": 40, "residence_time_min": 30, "yield_pct": 66.8},
+    {"temperature_c": 30, "residence_time_min": 10, "yield_pct": 49.4}
+  ],
+  "budget": {"cost_per_run": 25, "limit": 500, "max_runs": 12},
+  "output_contract": {
+    "recommendation": "object",
+    "search_strategy": "object",
+    "feasible_space": "object",
+    "model": "object",
+    "budget": "object"
+  }
+}
