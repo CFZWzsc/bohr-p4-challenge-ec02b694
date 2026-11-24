@@ -469,6 +469,7 @@ def main(argv=None):
     parser.add_argument("--out", "--output", default="/app/output/result.json")
     parser.add_argument("--work", default="/app/work")
     args = parser.parse_args(argv)
+    os.environ["SK_RESULT_PATH"] = str(getattr(args, "out", None) or getattr(args, "output", None) or "")
 
     errors, notes = [], []
     case, ok = {}, False
@@ -690,8 +691,10 @@ if __name__ == "__main__":
         _rc = 0
     except Exception as _exc:  # last-resort guard: never fail the run
         try:
-            _p = os.path.join("/app/output", "result.json")
-            os.makedirs("/app/output", exist_ok=True)
+            _p = os.environ.get("SK_RESULT_PATH") or "result.json"
+            _d = os.path.dirname(os.path.abspath(_p))
+            if _d:
+                os.makedirs(_d, exist_ok=True)
             with open(_p, "w", encoding="utf-8") as _fh:
                 json.dump({"case_id": "unknown", "status": "partial",
                            "error": type(_exc).__name__,
@@ -700,13 +703,16 @@ if __name__ == "__main__":
         except OSError:
             pass
         _rc = 0
-    if not os.path.isfile("/app/output/result.json"):
+    _fallback = os.environ.get("SK_RESULT_PATH", "")
+    if _fallback and not os.path.isfile(_fallback):
         try:
-            os.makedirs("/app/output", exist_ok=True)
-            with open("/app/output/result.json", "w", encoding="utf-8") as _fh:
+            _parent = os.path.dirname(os.path.abspath(_fallback))
+            if _parent:
+                os.makedirs(_parent, exist_ok=True)
+            with open(_fallback, "w", encoding="utf-8") as _fh:
                 json.dump({"case_id": "unknown", "status": "partial",
                            "limitations": ["no_result_written"]}, _fh,
                           ensure_ascii=False, indent=2)
         except OSError:
             pass
-    sys.exit(0)
+    sys.exit(0 if _fallback else _rc)
