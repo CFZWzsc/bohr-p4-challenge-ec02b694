@@ -1,0 +1,117 @@
+{
+  "cases": [
+    {
+      "baseline": {
+        "l1_distance": 10.0,
+        "observed_response": 93.0,
+        "planned_cost": 980.0,
+        "planned_runs": 49,
+        "recommended_values": {
+          "residence_time_min": 30,
+          "temperature_c": 60
+        },
+        "response_gap": 4.0,
+        "runs_within_budget": 0,
+        "source": "best_observed",
+        "status": "not_applicable",
+        "true_response": 84.0,
+        "within_budget": false
+      },
+      "case_file": "bench/cases/corner-max-yield.json",
+      "case_id": "bench-corner-max-yield",
+      "gain": {
+        "l1_improvement": 10.0,
+        "response_gap_improvement": 4.0,
+        "runs_within_budget_delta": 20,
+        "skill_strictly_better": true
+      },
+      "gold": {
+        "direction": "maximize",
+        "optimum": {
+          "residence_time_min": 40,
+          "temperature_c": 60
+        },
+        "true_response_at_optimum": 88.0
+      },
+      "gold_file": "bench/gold/corner-max-yield.json",
+      "skill": {
+        "l1_distance": 0.0,
+        "model_status": "fitted",
+        "planned_cost": 400.0,
+        "planned_runs": 20,
+        "recommended_values": {
+          "residence_time_min": 40.0,
+          "temperature_c": 60.0
+        },
+        "response_gap": 0.0,
+        "runs_within_budget": 20,
+        "source": "linear_surrogate",
+        "status": "success",
+        "true_response": 88.0,
+        "within_budget": true
+      }
+    },
+    {
+      "baseline": {
+        "l1_distance": 10.5,
+        "observed_response": 25.5,
+        "planned_cost": 750.0,
+        "planned_runs": 25,
+        "recommended_values": {
+          "catalyst_loading_wt": 1.0,
+          "reaction_time_min": 30
+        },
+        "response_gap": 4.25,
+        "runs_within_budget": 0,
+        "source": "best_observed",
+        "status": "not_applicable",
+        "true_response": 29.25,
+        "within_budget": false
+      },
+      "case_file": "bench/cases/corner-min-impurity.json",
+      "case_id": "bench-corner-min-impurity",
+      "gain": {
+        "l1_improvement": 10.5,
+        "response_gap_improvement": 4.25,
+        "runs_within_budget_delta": 15,
+        "skill_strictly_better": true
+      },
+      "gold": {
+        "direction": "minimize",
+        "optimum": {
+          "catalyst_loading_wt": 0.5,
+          "reaction_time_min": 20
+        },
+        "true_response_at_optimum": 25.0
+      },
+      "gold_file": "bench/gold/corner-min-impurity.json",
+      "skill": {
+        "l1_distance": 0.0,
+        "model_status": "fitted",
+        "planned_cost": 450.0,
+        "planned_runs": 15,
+        "recommended_values": {
+          "catalyst_loading_wt": 0.5,
+          "reaction_time_min": 20.0
+        },
+        "response_gap": 0.0,
+        "runs_within_budget": 15,
+        "source": "linear_surrogate",
+        "status": "success",
+        "true_response": 25.0,
+        "within_budget": true
+      }
+    }
+  ],
+  "protocol_version": "optimization-bench-v1",
+  "summary": {
+    "baseline_gap_total": 8.25,
+    "baseline_l1_total": 20.5,
+    "baseline_runs_within_budget": 0,
+    "cases": 2,
+    "skill_gap_total": 0.0,
+    "skill_l1_total": 0.0,
+    "skill_runs_within_budget": 35,
+    "skill_strictly_better_on_all_cases": true
+  }
+}
