@@ -1,0 +1,29 @@
+{
+  "case_id": "bench-corner-min-impurity",
+  "parameters": [
+    {"name": "catalyst_loading_wt", "min": 0.5, "max": 2.5, "step": 0.5, "unit": "wt%"},
+    {"name": "reaction_time_min", "min": 20, "max": 60, "step": 10, "unit": "min"}
+  ],
+  "objectives": [
+    {"name": "impurity_ppm", "unit": "ppm", "direction": "minimize"}
+  ],
+  "observations": [
+    {"catalyst_loading_wt": 0.5, "reaction_time_min": 30, "impurity_ppm": 28.0},
+    {"catalyst_loading_wt": 1.0, "reaction_time_min": 20, "impurity_ppm": 26.25},
+    {"catalyst_loading_wt": 1.0, "reaction_time_min": 30, "impurity_ppm": 25.5},
+    {"catalyst_loading_wt": 1.5, "reaction_time_min": 20, "impurity_ppm": 30.0},
+    {"catalyst_loading_wt": 1.5, "reaction_time_min": 30, "impurity_ppm": 33.0},
+    {"catalyst_loading_wt": 1.5, "reaction_time_min": 40, "impurity_ppm": 42.0},
+    {"catalyst_loading_wt": 2.0, "reaction_time_min": 40, "impurity_ppm": 48.25},
+    {"catalyst_loading_wt": 2.5, "reaction_time_min": 50, "impurity_ppm": 72.0}
+  ],
+  "budget": {"cost_per_run": 30, "limit": 450, "max_runs": 15},
+  "output_contract": {
+    "recommendation": "object",
+    "search_strategy": "object",
+    "feasible_space": "object",
+    "model": "object",
+    "budget": "object"
+  },
+  "notes": "纯合成案例。真实响应 impurity_ppm = 25 + 5*(catalyst_loading_wt-0.5)^2 + 0.03*(reaction_time_min-20)^2，最优在角点 (0.5, 20)，真实响应 25.0 ppm。观测 (1.0,30) 记为 25.5，真实值 29.25，模拟一次性读数偏低 3.75 ppm；其余观测只含 ±0.02 的舍入误差。因此直接取观测最优会落在 (1.0,30)，而线性代理模型推荐的角点是 (0.5,20)。"
+}
