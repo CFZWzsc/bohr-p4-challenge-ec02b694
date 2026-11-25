@@ -1,0 +1,9 @@
+{
+  "case_id": "bench-corner-min-impurity",
+  "optimum": {
+    "catalyst_loading_wt": 0.5,
+    "reaction_time_min": 20
+  },
+  "true_response_at_optimum": 25.0,
+  "notes": "真实响应函数（案例 notes 中同样写明）：impurity_ppm = 25 + 5*(catalyst_loading_wt-0.5)^2 + 0.03*(reaction_time_min-20)^2。该函数在可行域 [0.5,2.5]x[20,60] 上单调递增，最小值在角点 (0.5, 20)，取值 25.0 ppm。金标准由函数直接给出，不取自任何技能的预测值。"
+}
