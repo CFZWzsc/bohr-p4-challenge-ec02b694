@@ -18,6 +18,7 @@ answers, private data or credentials are included.
 | `SKILL.md` |
 | `examples/demo-case/case.json` |
 | `examples/quickstart.md` |
+| `scripts/publish_artifacts.py` |
 | `scripts/run_skill.py` |
 | `README.md` |
 
