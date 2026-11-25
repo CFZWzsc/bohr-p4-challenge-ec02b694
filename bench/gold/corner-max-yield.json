@@ -1,0 +1,9 @@
+{
+  "case_id": "bench-corner-max-yield",
+  "optimum": {
+    "temperature_c": 60,
+    "residence_time_min": 40
+  },
+  "true_response_at_optimum": 88.0,
+  "notes": "真实响应函数（案例 notes 中同样写明）：yield_pct = 88 - 0.05*(temperature_c-60)^2 - 0.04*(residence_time_min-40)^2。该函数在可行域 [30,60]x[10,40] 上单调递增，最大值在角点 (60, 40)，取值 88.0%。金标准由函数直接给出，不取自任何技能的预测值。"
+}
