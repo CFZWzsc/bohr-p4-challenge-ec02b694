@@ -510,12 +510,17 @@ def main(argv=None):
             "direction": objective["direction"],
             "unit": objective["unit"],
             "recommended_values": best_point,
+            "recommended_values_source": "linear_surrogate",
             "predicted_response": round(best_value, 6),
             "runner_up_predicted_response": round(runner, 6) if runner is not None else None,
             "predicted_margin": round(abs(best_value - runner), 6) if runner is not None else None,
             "feasible_interval": {d["name"]: {"min": min(per_param[d["name"]]), "max": max(per_param[d["name"]]), "unit": d["unit"]}
                                   for d in domains if per_param.get(d["name"])},
             "basis": "linear surrogate prediction over the feasible grid; not a measured optimum",
+            "stop_rule": ("Stop once the predicted margin over the runner-up exceeds the larger of "
+                          "5% of the predicted response and the residual sigma, and the recommended "
+                          "point lies inside the observed hull; otherwise add one confirmation run at "
+                          "the recommended point before deciding."),
         }
     elif candidates:
         center = {}
@@ -532,13 +537,46 @@ def main(argv=None):
                     point[domain["name"]] = values[0] if direction == 0 else values[-1]
             if point and point not in corners:
                 corners.append(point)
+        observed_best = None
+        if objective:
+            rejects = {}
+            for domain in domains:
+                allowed, _ = allowed_values(domain, constraints)
+                rejects[domain["name"]] = set(allowed)
+            scored_rows = []
+            for row in rows:
+                if not row["params"]:
+                    continue
+                value = None
+                for key, entry in row["responses"].items():
+                    if norm(key) == norm(objective["name"]):
+                        value = entry
+                if value is None:
+                    continue
+                if any(row["params"].get(name) is None or row["params"][name] not in allowed
+                       for name, allowed in rejects.items() if allowed):
+                    continue
+                scored_rows.append((value, row["params"]))
+            if scored_rows:
+                scored_rows.sort(key=lambda pair: pair[0],
+                                 reverse=objective["direction"] == "maximize")
+                observed_best = {"values": scored_rows[0][1],
+                                 "observed_response": scored_rows[0][0],
+                                 "n_observations_scored": len(scored_rows)}
         recommendation = {
             "objective": objective["name"] if objective else None,
-            "recommended_values": None,
+            "recommended_values": observed_best["values"] if observed_best else None,
+            "recommended_values_source": "observed" if observed_best else None,
+            "observed_response": observed_best["observed_response"] if observed_best else None,
             "exploration_points": ([center] if center else []) + corners,
             "feasible_interval": {d["name"]: {"min": min(per_param[d["name"]]), "max": max(per_param[d["name"]]), "unit": d["unit"]}
                                   for d in domains if per_param.get(d["name"])},
-            "basis": "no fitted response model; points are exploration anchors only, no optimum is claimed",
+            "basis": ("no fitted response model; recommended_values is the best observed feasible point, "
+                      "not a predicted optimum" if observed_best else
+                      "no fitted response model; points are exploration anchors only, no optimum is claimed"),
+            "stop_rule": ("Stop exploring once one measured point separates from the next by more than "
+                          "the replicate sigma; if no point separates, add one run at the steepest "
+                          "observed direction and refit before recommending an optimum."),
         }
 
     search = strategy(candidates, domains, budget)
