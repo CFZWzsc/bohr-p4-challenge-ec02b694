@@ -1,0 +1,29 @@
+{
+  "case_id": "bench-corner-max-yield",
+  "parameters": [
+    {"name": "temperature_c", "min": 30, "max": 60, "step": 5, "unit": "°C"},
+    {"name": "residence_time_min", "min": 10, "max": 40, "step": 5, "unit": "min"}
+  ],
+  "objectives": [
+    {"name": "yield_pct", "unit": "%", "direction": "maximize"}
+  ],
+  "observations": [
+    {"temperature_c": 30, "residence_time_min": 10, "yield_pct": 7.0},
+    {"temperature_c": 35, "residence_time_min": 15, "yield_pct": 31.75},
+    {"temperature_c": 40, "residence_time_min": 20, "yield_pct": 52.0},
+    {"temperature_c": 40, "residence_time_min": 35, "yield_pct": 67.0},
+    {"temperature_c": 45, "residence_time_min": 25, "yield_pct": 67.75},
+    {"temperature_c": 50, "residence_time_min": 30, "yield_pct": 79.0},
+    {"temperature_c": 55, "residence_time_min": 35, "yield_pct": 85.75},
+    {"temperature_c": 60, "residence_time_min": 30, "yield_pct": 93.0}
+  ],
+  "budget": {"cost_per_run": 20, "limit": 400, "max_runs": 20},
+  "output_contract": {
+    "recommendation": "object",
+    "search_strategy": "object",
+    "feasible_space": "object",
+    "model": "object",
+    "budget": "object"
+  },
+  "notes": "纯合成案例。真实响应 yield_pct = 88 - 0.05*(temperature_c-60)^2 - 0.04*(residence_time_min-40)^2，最优在角点 (60, 40)，真实响应 88.0%。观测 (60,30) 记为 93.0，真实值 84.0，模拟一次性读数偏大 9 个百分点；其余观测只含 ±0.05 的舍入误差。因此直接取观测最优会落在 (60,30)，而线性代理模型推荐的角点是 (60,40)。"
+}
